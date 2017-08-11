@@ -3,7 +3,9 @@ package sg.edu.rp.webservices.p12_mydatabook;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -58,6 +60,14 @@ public class BioFragment extends Fragment {
                                 public void onClick(DialogInterface dialog, int id) {
                                     Toast.makeText(getContext(), "You clicked yes",
                                             Toast.LENGTH_LONG).show();
+
+                                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+                                    SharedPreferences.Editor prefEdit = prefs.edit();
+                                    prefEdit.putString("bio",etPassphrase.getText().toString());
+                                    prefEdit.commit();
+
+
+
                                     tv.setText(etPassphrase.getText().toString());
                                 }
                             })
@@ -76,6 +86,13 @@ public class BioFragment extends Fragment {
         });
 
         return view;
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String bio = prefs.getString("bio","no bio");
+        tv.setText(bio);
     }
 
 }
